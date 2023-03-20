@@ -1,0 +1,17 @@
+The Hospital Management App is a web application developed using Spring Boot and REST API technologies. The app is designed to provide an easy-to-use interface for managing hospital operations such as patient registration, appointment scheduling, billing, and more.
+
+The app's front-end is built using HTML, CSS, and JavaScript, which provides an interactive user interface. The back-end is developed using Spring Boot, which allows for easy integration with various databases such as MySQL, Oracle, or PostgreSQL. The app also uses RESTful APIs to provide a scalable and flexible interface for data exchange.
+
+The app's main features include:
+
+1. Patient Registration: The app allows new patients to register by entering their personal details, contact information, and medical history. The registration process is simple and user-friendly, allowing patients to quickly register and access their health records.
+
+2. Appointment Scheduling: The app allows patients to schedule appointments with doctors, nurses, or other healthcare providers. The app also allows healthcare providers to view their schedules and manage their appointments.
+
+3. Billing and Payment: The app allows healthcare providers to generate invoices and bills for patients based on the services provided. Patients can view their bills and make payments online through the app.
+
+4. Electronic Health Records (EHR): The app provides a centralized repository for patient health records. Healthcare providers can access and update patient records, view medical histories, and add new diagnoses or treatments.
+
+5. Prescription Management: The app allows healthcare providers to generate electronic prescriptions for patients, which can be easily filled at any pharmacy.
+
+Overall, the Hospital Management App is a comprehensive solution for managing hospital operations. It simplifies the patient registration process, improves appointment scheduling, and streamlines billing and payment. With its user-friendly interface and robust back-end, the app is an ideal solution for hospitals and healthcare providers looking to modernize their operations.

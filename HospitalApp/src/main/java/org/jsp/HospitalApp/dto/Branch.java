@@ -14,7 +14,7 @@ import jakarta.persistence.OneToOne;
 import lombok.Data;
 
 @Entity
-//@Data
+@Data
 public class Branch {
 	
 	@Id
@@ -32,62 +32,7 @@ public class Branch {
 	private List<Admin> admin;
 	@OneToMany
 	private List<Staff> staffs;
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	public long getPhone() {
-		return phone;
-	}
-	public void setPhone(long phone) {
-		this.phone = phone;
-	}
-	@JsonIgnore
-	public Hospital getHospital() {
-		return hospital;
-	}
-	public void setHospital(Hospital hospital) {
-		this.hospital = hospital;
-	}
-	public Address getAddress() {
-		return address;
-	}
-	public void setAddress(Address address) {
-		this.address = address;
-	}
-	public List<Encounter> getEncounters() {
-		return encounters;
-	}
-	public void setEncounters(List<Encounter> encounters) {
-		this.encounters = encounters;
-	}
-	public List<Admin> getAdmin() {
-		return admin;
-	}
-	public void setAdmin(List<Admin> admin) {
-		this.admin = admin;
-	}
-	public List<Staff> getStaffs() {
-		return staffs;
-	}
-	public void setStaffs(List<Staff> staffs) {
-		this.staffs = staffs;
-	}
-
+	
 	@JsonIgnore
 	public Hospital getHospital1() {
 		return hospital;

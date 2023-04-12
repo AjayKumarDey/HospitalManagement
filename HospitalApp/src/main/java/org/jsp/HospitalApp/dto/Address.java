@@ -24,4 +24,5 @@ public class Address {
 	public Branch getBranch() {
 		return branch;
 	}
+
 }

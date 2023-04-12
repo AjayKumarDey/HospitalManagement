@@ -3,9 +3,12 @@ package org.jsp.HospitalApp.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.jsp.HospitalApp.dao.BranchDao;
 import org.jsp.HospitalApp.dao.EncounterDao;
+import org.jsp.HospitalApp.dto.Branch;
 import org.jsp.HospitalApp.dto.Encounter;
 import org.jsp.HospitalApp.dto.ResponseStructure;
+import org.jsp.HospitalApp.dto.Staff;
 import org.jsp.HospitalApp.exception.IdNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,13 +20,24 @@ import org.springframework.stereotype.Service;
 public class EncounterService {
 	@Autowired
 	EncounterDao encounterDao;
+	@Autowired
+	BranchDao branchDao;
 
-	public ResponseEntity<ResponseStructure<Encounter>> saveEncounter(Encounter encounter) {
+
+	public ResponseEntity<ResponseStructure<Encounter>> saveEncounter(Encounter encounter, int bid) {
+		Optional<Branch> branch = branchDao.getBranch(bid);
 		ResponseStructure<Encounter> structure = new ResponseStructure<Encounter>();
-		structure.setBody(encounterDao.saveEncounter(encounter));
-		structure.setMessage("Encounter saved successfully");
-		structure.setCode(HttpStatus.ACCEPTED.value());
-		return new ResponseEntity<ResponseStructure<Encounter>>(structure, HttpStatus.ACCEPTED);
+		if (branch.isPresent()) {
+			encounter.setBranch(branch.get());
+			branch.get().getEncounters().add(encounter);
+			structure.setBody(encounterDao.saveEncounter(encounter));
+			structure.setMessage("encounterDao saved successfully");
+			structure.setCode(HttpStatus.ACCEPTED.value());
+
+			return new ResponseEntity<ResponseStructure<Encounter>>(structure, HttpStatus.ACCEPTED);
+		} else {
+			throw new IdNotFoundException();
+		}
 	}
 
 	public ResponseEntity<ResponseStructure<Encounter>> updateEncounter(Encounter encounter) {

@@ -21,9 +21,9 @@ public class AdminController {
 	@Autowired
 	private AdminService adminService;
 
-	@PostMapping("/admin")
-	public ResponseEntity<ResponseStructure<Admin>> saveAdmin(@RequestBody Admin admin) {
-		return adminService.saveAdmin(admin);
+	@PostMapping("/admin/{bid}")
+	public ResponseEntity<ResponseStructure<Admin>> saveAdmin(@RequestBody Admin admin, @PathVariable int bid) {
+		return adminService.saveAdmin(admin,bid);
 	}
 
 	@PutMapping("/admin")

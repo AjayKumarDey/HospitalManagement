@@ -4,7 +4,10 @@ import java.util.List;
 import java.util.Optional;
 
 import org.jsp.HospitalApp.dao.AddressDao;
+import org.jsp.HospitalApp.dao.BranchDao;
 import org.jsp.HospitalApp.dto.Address;
+import org.jsp.HospitalApp.dto.Branch;
+import org.jsp.HospitalApp.dto.Hospital;
 import org.jsp.HospitalApp.dto.ResponseStructure;
 import org.jsp.HospitalApp.exception.IdNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,14 +19,27 @@ import org.springframework.stereotype.Service;
 public class AddressService {
 	@Autowired
 	AddressDao addressDao;
+	@Autowired
+	BranchDao branchDao;
 
-	public ResponseEntity<ResponseStructure<Address>> saveAddress(Address address) {
+	public ResponseEntity<ResponseStructure<Address>> saveAddress(Address address ,int bid) {
+		Optional<Branch> branch = branchDao.getBranch(bid);
 		ResponseStructure<Address> structure = new ResponseStructure<Address>();
-		structure.setBody(addressDao.saveAddress(address));
-		structure.setMessage("Address Saved Succesfully");
-		structure.setCode(HttpStatus.ACCEPTED.value());
-		return new ResponseEntity<ResponseStructure<Address>>(structure, HttpStatus.ACCEPTED);
+		if (branch.isPresent()) {
+			address.setBranch(branch.get());
+			branch.get().setAddress(address);
+			structure.setBody(addressDao.saveAddress(address));
+			structure.setMessage("Saved Successfully");
+			structure.setCode(HttpStatus.ACCEPTED.value());
+			
+			return new ResponseEntity<ResponseStructure<Address>>(structure, HttpStatus.ACCEPTED);
+		} else {
+			throw new IdNotFoundException();
+		}
+
+		
 	}
+		
 
 	public ResponseEntity<ResponseStructure<Address>> updateAddress(Address address) {
 		ResponseStructure<Address> structure = new ResponseStructure<Address>();

@@ -1,9 +1,6 @@
 package org.jsp.HospitalApp.dto;
-
 import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,11 +8,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.Data;
-
 @Entity
 @Data
 public class MedOrder {
-
+	@JsonIgnore
+	public Person getPerson() {
+		return person;
+	}
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
@@ -23,10 +23,5 @@ public class MedOrder {
 	@OneToMany
 	private List<Item> items;
 	@ManyToOne
-	private Encounter encounter;
-
-	@JsonIgnore
-	public Encounter getEncounter() {
-		return encounter;
-	}
+	private Person person;
 }

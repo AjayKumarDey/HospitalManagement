@@ -4,7 +4,10 @@ import java.util.List;
 import java.util.Optional;
 
 import org.jsp.HospitalApp.dao.ItemDao;
+import org.jsp.HospitalApp.dao.MedOrderDao;
+import org.jsp.HospitalApp.dto.Admin;
 import org.jsp.HospitalApp.dto.Item;
+import org.jsp.HospitalApp.dto.MedOrder;
 import org.jsp.HospitalApp.dto.ResponseStructure;
 import org.jsp.HospitalApp.exception.IdNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +19,23 @@ import org.springframework.stereotype.Service;
 public class ItemService {
 	@Autowired
 	ItemDao itemDao;
+	@Autowired
+	MedOrderDao medOrderDao;
 
-	public ResponseEntity<ResponseStructure<Item>> saveItem(Item item) {
+	public ResponseEntity<ResponseStructure<Item>> saveItem(Item item,int mid) {
+		Optional<MedOrder> medOrder=medOrderDao.getMedOrder(mid);
 		ResponseStructure<Item> structure = new ResponseStructure<Item>();
-		structure.setBody(itemDao.saveItem(item));
-		structure.setMessage("Item saved successfully");
-		structure.setCode(HttpStatus.ACCEPTED.value());
-		return new ResponseEntity<ResponseStructure<Item>>(structure, HttpStatus.ACCEPTED);
+		if (medOrder.isPresent()) {
+			item.setMedOrder(medOrder.get());
+			medOrder.get().getItems().add(item);
+			structure.setBody(itemDao.saveItem(item));
+			structure.setMessage("medOrder saved successfully");
+			structure.setCode(HttpStatus.ACCEPTED.value());
+
+			return new ResponseEntity<ResponseStructure<Item>>(structure, HttpStatus.ACCEPTED);
+		} else {
+			throw new IdNotFoundException();
+		}
 	}
 
 	public ResponseEntity<ResponseStructure<Item>> updateItem(Item item) {

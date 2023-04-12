@@ -4,8 +4,11 @@ import java.util.List;
 import java.util.Optional;
 
 import org.jsp.HospitalApp.dao.AdminDao;
+import org.jsp.HospitalApp.dao.BranchDao;
 import org.jsp.HospitalApp.dto.Admin;
+import org.jsp.HospitalApp.dto.Branch;
 import org.jsp.HospitalApp.dto.ResponseStructure;
+import org.jsp.HospitalApp.dto.Staff;
 import org.jsp.HospitalApp.exception.IdNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,15 +19,24 @@ import org.springframework.stereotype.Service;
 public class AdminService {
 	@Autowired
 	private AdminDao adminDao;
+	@Autowired
+	BranchDao branchDao;
 
-	public ResponseEntity<ResponseStructure<Admin>> saveAdmin(Admin admin) {
+	public ResponseEntity<ResponseStructure<Admin>> saveAdmin(Admin admin, int bid) {
+		Optional<Branch> branch = branchDao.getBranch(bid);
 		ResponseStructure<Admin> structure = new ResponseStructure<Admin>();
-		structure.setBody(adminDao.saveAdmin(admin));
-		structure.setMessage("Admin Saved Succesfully");
-		structure.setCode(HttpStatus.ACCEPTED.value());
-		return new ResponseEntity<ResponseStructure<Admin>>(structure, HttpStatus.ACCEPTED);
-	}
+		if (branch.isPresent()) {
+			admin.setBranch(branch.get());
+			branch.get().getAdmin().add(admin);
+			structure.setBody(adminDao.saveAdmin(admin));
+			structure.setMessage("admin saved successfully");
+			structure.setCode(HttpStatus.ACCEPTED.value());
 
+			return new ResponseEntity<ResponseStructure<Admin>>(structure, HttpStatus.ACCEPTED);
+		} else {
+			throw new IdNotFoundException();
+		}
+	}
 	public ResponseEntity<ResponseStructure<Admin>> updateAdmin(Admin admin) {
 		ResponseStructure<Admin> structure = new ResponseStructure<Admin>();
 		structure.setBody(adminDao.updateAdmin(admin));
@@ -34,8 +46,8 @@ public class AdminService {
 	}
 
 	public ResponseEntity<ResponseStructure<String>> deleteAdmin(int id) {
-		ResponseStructure<String> structure = new ResponseStructure<String>();
 		Optional<Admin> op = adminDao.getAdmin(id);
+		ResponseStructure<String> structure = new ResponseStructure<String>();
 		if (op.isPresent()) {
 			adminDao.deleteAdmin(id);
 			structure.setBody("Admin Found");
@@ -63,7 +75,6 @@ public class AdminService {
 		structure.setBody(adminDao.getAll());
 		structure.setMessage("List of Admin");
 		structure.setCode(HttpStatus.FOUND.value());
-		;
 		return new ResponseEntity<ResponseStructure<List<Admin>>>(structure, HttpStatus.FOUND);
 	}
 

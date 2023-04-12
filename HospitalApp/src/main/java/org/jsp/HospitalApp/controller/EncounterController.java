@@ -20,9 +20,9 @@ public class EncounterController {
 	@Autowired
 	EncounterService encounterService;
 
-	@PostMapping("/encounter")
-	public ResponseEntity<ResponseStructure<Encounter>> saveEncounter(@RequestBody Encounter encounter) {
-		return encounterService.saveEncounter(encounter);
+	@PostMapping("/encounter/{bid}")
+	public ResponseEntity<ResponseStructure<Encounter>> saveEncounter(@RequestBody Encounter encounter, @PathVariable int bid) {
+		return encounterService.saveEncounter(encounter,bid);
 	}
 
 	@PutMapping("/encounter")

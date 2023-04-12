@@ -17,9 +17,9 @@ public class MedOrderController {
 	@Autowired
 	MedOrderService medOrderService;
 
-	@PostMapping("/medOrder/{eid}")
-	public ResponseEntity<ResponseStructure<MedOrder>> saveMedOrder(@RequestBody MedOrder medOrder,@PathVariable int eid) {
-		return medOrderService.saveMedOrder(medOrder,eid);
+	@PostMapping("/medOrder/{pid}")
+	public ResponseEntity<ResponseStructure<MedOrder>> saveMedOrder(@RequestBody MedOrder medOrder,@PathVariable int pid) {
+		return medOrderService.saveMedOrder(medOrder,pid);
 
 	}
 

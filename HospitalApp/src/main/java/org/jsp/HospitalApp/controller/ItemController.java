@@ -20,9 +20,9 @@ public class ItemController {
 	@Autowired
 	ItemService itemService;
 
-	@PostMapping("/item")
-	public ResponseEntity<ResponseStructure<Item>> saveItem(@RequestBody Item item) {
-		return itemService.saveItem(item);
+	@PostMapping("/item/{mid}")
+	public ResponseEntity<ResponseStructure<Item>> saveItem(@RequestBody Item item,@PathVariable int mid) {
+		return itemService.saveItem(item,mid);
 	}
 
 	@PutMapping("/item")

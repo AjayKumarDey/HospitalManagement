@@ -5,9 +5,11 @@ import java.util.Optional;
 
 import org.jsp.HospitalApp.dao.EncounterDao;
 import org.jsp.HospitalApp.dao.MedOrderDao;
+import org.jsp.HospitalApp.dao.PersonDao;
 import org.jsp.HospitalApp.dto.Encounter;
 import org.jsp.HospitalApp.dto.Hospital;
 import org.jsp.HospitalApp.dto.MedOrder;
+import org.jsp.HospitalApp.dto.Person;
 import org.jsp.HospitalApp.dto.ResponseStructure;
 import org.jsp.HospitalApp.exception.IdNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,24 +20,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class MedOrderService {
 	@Autowired
-
-	MedOrderDao dao;
-	@Autowired
-	EncounterDao encounterDao;
-
 	MedOrderDao medOrderDao;
-
-
-	public ResponseEntity<ResponseStructure<MedOrder>> saveMedOrder(MedOrder medOrder, int eid) {
-		Optional<Encounter> encounter = encounterDao.getEncounter(eid);
+	@Autowired
+	PersonDao personDao;
+	public ResponseEntity<ResponseStructure<MedOrder>> saveMedOrder(MedOrder medOrder, int pid) {
+		Optional<Person> person = personDao.getPerson(pid);
 		ResponseStructure<MedOrder> structure = new ResponseStructure<MedOrder>();
-		structure.setBody(medOrderDao.saveMedOrder(medOrder));
-		structure.setMessage("medOrder saved successfully");
-		structure.setCode(HttpStatus.ACCEPTED.value());
-		if (encounter.isPresent()) {
-			medOrder.setEncounter(encounter.get());
-			encounter.get().getMedOrders().add(medOrder);
-			structure.setBody(dao.saveMedOrder(medOrder));
+		if (person.isPresent()) {
+			medOrder.setPerson(person.get());
+			person.get().getMedOrders().add(medOrder);
+			structure.setBody(medOrderDao.saveMedOrder(medOrder));
 			structure.setMessage("Saved Successfully");
 			structure.setCode(HttpStatus.ACCEPTED.value());
 		} else {

@@ -11,30 +11,24 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.Data;
-
 @Data
 @Entity
 public class Encounter {
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String reason, date;
-	@OneToMany
-	private List<MedOrder> medOrders;
 	@ManyToOne
 	private Branch branch;
-	@ManyToOne
-	private Person person;
-
 	@JsonIgnore
 	public Branch getBranch() {
 		return branch;
 	}
-
-	@JsonIgnore
-	public Person getPerson() {
-		return person;
-	}
-
+	@OneToMany
+	private List<Person> persons;
+//	@JsonIgnore
+//	public List<Person> getPersons() {
+//		return persons;
+//	}
 }

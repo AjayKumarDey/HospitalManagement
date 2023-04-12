@@ -20,9 +20,9 @@ public class AddressController {
 	@Autowired
 	AddressService addressService;
 
-	@PostMapping("/address")
-	public ResponseEntity<ResponseStructure<Address>> saveAddress(@RequestBody Address address) {
-		return addressService.saveAddress(address);
+	@PostMapping("/address/{bid}")
+	public ResponseEntity<ResponseStructure<Address>> saveAddress(@RequestBody Address address , @PathVariable int bid) {
+		return addressService.saveAddress(address,bid);
 	}
 
 	@PutMapping("/address")

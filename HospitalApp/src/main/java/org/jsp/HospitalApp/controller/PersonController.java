@@ -19,9 +19,9 @@ public class PersonController {
 	@Autowired
 	PersonService personService;
 
-	@PostMapping("/person")
-	public ResponseEntity<ResponseStructure<Person>> savePerson(@RequestBody Person person) {
-		return personService.savePerson(person);
+	@PostMapping("/person/{eid}")
+	public ResponseEntity<ResponseStructure<Person>> savePerson(@RequestBody Person person, @PathVariable int eid) {
+		return personService.savePerson(person,eid);
 	}
 
 	@PutMapping("/person")
